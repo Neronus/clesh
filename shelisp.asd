@@ -2,7 +2,7 @@
   :serial t
   :author "Christian von Essen <christian@mvonessen.de>"
   :license "GPL 2 (see LICENSE)"
-  :depends-on (#:trivial-garbage
+  :depends-on (#:trivial-shell
                #:lisp-unit)
   :components (:File "shelisp")
   :description ("Shelisp is a very short program that provides mechanisms for composing and running Unix shell (particularly bash) commands and constructs from Common Lisp.
