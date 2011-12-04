@@ -4,7 +4,7 @@
   :license "GPL 2 (see LICENSE)"
   :depends-on (#:trivial-shell
                #:lisp-unit)
-  :components (:File "shelisp")
+  :components ((:file "shelisp"))
   :description ("Shelisp is a very short program that provides mechanisms for composing and running Unix shell (particularly bash) commands and constructs from Common Lisp.
 
 Essentially, it provides a '!' syntax that you can use to run commands and a '[]' embedded mode where you can enter bash scripts and obtain the standard output as a lisp string, and some other features.
