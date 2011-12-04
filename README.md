@@ -224,13 +224,26 @@ evaluated, the `BB` in the evaluation context is used.
 
 ## Technical issues
 
-Expressions preceded with '`?`' in the embedded shell scripts (with the '`[]`' syntax) are evaluated in the context
-where they appear, at 'eval' time; expressions in the 'bang' context (with the '`!`' or the '`!!`' syntax) are evaluated
-at read time, in the context of the last top level form before the form containing the bangs. This is because the
-bangs are intended for shell-only commands, normally given at the top level (command line) with immediate
-results. The embedded scripts are supposed to become part of functions or more complex forms, are parsed at
-read time and prepared to be executed at runtime.
+Expressions preceded with '`?`' in the embedded shell scripts (with
+the '`[]`' syntax) are evaluated in the context where they appear, at
+'eval' time; expressions in the 'bang' context (with the '`!`' or the
+'`!!`' syntax) are evaluated at read time, in the context of the last
+top level form before the form containing the bangs. This is because
+the bangs are intended for shell-only commands, normally given at the
+top level (command line) with immediate results. The embedded scripts
+are supposed to become part of functions or more complex forms, are
+parsed at read time and prepared to be executed at runtime.
 
-In the 'bang' forms only simple shell commands can be issued as the reader does not detect the circumstances
-when a construct (such as ca '`case`') occupies more than one line. In the embedded form or with the script
-command, any script can be executed.
+In the 'bang' forms only simple shell commands can be issued as the
+reader does not detect the circumstances when a construct (such as ca
+'`case`') occupies more than one line. In the embedded form or with
+the script command, any script can be executed.
+
+When interpolating a symbol, the reader might consider the closing `]`
+or `}` part of that symbol. For example, [echo ?foo ] will make the
+reader complain about not finding the end of what it has to read.
+Instead, you have to write `#[echo ?foo ]#` (or `#[ echo ?foo ]#`).
+Note though, that this introduces an extra space:
+
+     * #[echo sl:*shell ]#
+     "echo /bin/sh "
