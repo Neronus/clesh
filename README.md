@@ -19,7 +19,10 @@ constructs similar to unix shells, by invoking such shells.
 
 Load any Common Lisp implemenation, and on the REPL load shelisp by
 invoking
+
     (load "shelisp.lisp")
+    (shelisp:enable)
+
 ###  The bang (!) escape to shell
 
 Now you can say (the '`*`' is already put there by your CL):
@@ -39,14 +42,14 @@ as a bash command and the result is printed on the standard output.
 Now try:
 
     * !echo ?(+ 2 3) zuzu
-    5zuzu
+    5 zuzu
     
 The '`?`' is the 'lisp escape'. It is followed by an s-expression which is read, executed and printed (with
 princ) and the printed result replaces the '`?`' and the expression in the shell command. It can be any Lisp
 expression.
 
     * !echo ?(+ 2/3 2/11) " <- this is a fraction"
-    28/33 ;; <- this is a fraction
+    28/33 <- this is a fraction
     * !echo ?(factorial 100) " <- this is a beegnum"
     933262154439441526816992388562667004907159682643816\
     21468592963895217599993229915608941463\
@@ -70,11 +73,13 @@ For example:
     * [echo hi there!]
     "hi there!
     "
+    ""
+    0
 
 
 One thing that you can't ordinarily do in bash:
 
-    * (dotimes (i 7) (princ [echo ?i ]) )
+    * (dotimes (i 7) (princ [echo ?i ]))
     0
     1
     2
@@ -85,7 +90,7 @@ One thing that you can't ordinarily do in bash:
     
 You can now say:
 
-    * (defun count-to (x) (dotimes (i x) (princ [echo ?i ]) ))
+    * (defun count-to (x) (dotimes (i x) (princ [echo ?i ])))
     COUNT-TO
     * (COUNT-TO 3)
     0
@@ -142,8 +147,9 @@ Notice how purely Lisp commands, such as variable assignement (bindings), can be
 
 ### Run scripts as Lisp calls
 
-The function script takes as argument a string and executes it as a bash script, returning the standard output
-of the script as a string.
+The function script takes as argument a string and executes it as a bash script, returning the standard output of the script as a string as first value,
+the error output of the script as second value and the return value
+as last value.
 
     * (script "ls")
     "
@@ -160,6 +166,8 @@ of the script as a string.
     shelisp.tex
     spec.txt
     "
+    ""
+    0
     
 ### Templates
 
