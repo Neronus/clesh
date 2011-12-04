@@ -23,4 +23,7 @@
    '("asd\\#") (read-interpolated-string (make-string-input-stream "asd\\#]") #\]))
   (assert-equal
    '("asd foo " (+ 2 2) " bar " (+ 3 3))
-   (read-interpolated-string (make-string-input-stream "asd foo ?(+ 2 2) bar ?(+ 3 3)]") #\])))
+   (read-interpolated-string (make-string-input-stream "asd foo ?(+ 2 2) bar ?(+ 3 3)]") #\]))
+  (assert-equal
+   '("asd foo \\]#")
+   (read-interpolated-string (make-string-input-stream "asd foo \\\\\\]#]#") #\# #\])))
