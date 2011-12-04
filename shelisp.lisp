@@ -113,8 +113,8 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
        :with buffer = (get-buffer)
        :for before-last-char = nil :then last-char
        :for last-char = nil :then char
-       :for was-escaped = (and last-char (char= last-char #\\))
-       :for before-was-escaped = (and before-last-char (char= before-last-char #\\))
+       :for before-was-escaped = nil then was-escaped
+       :for was-escaped = (and last-char (char= last-char #\\) (not was-escaped))
        :for char = (read-char str)
        :with mixl = nil
        :do (cond
