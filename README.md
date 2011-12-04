@@ -240,10 +240,13 @@ reader does not detect the circumstances when a construct (such as ca
 the script command, any script can be executed.
 
 When interpolating a symbol, the reader might consider the closing `]`
-or `}` part of that symbol. For example, [echo ?foo ] will make the
+or `}` part of that symbol. For example, [echo ?sl:*shell* ] will make the
 reader complain about not finding the end of what it has to read.
-Instead, you have to write `#[echo ?foo ]#` (or `#[ echo ?foo ]#`).
+Instead, you have to write `#[echo ?sl:*shell* ]#` (or `#[ echo ?sl:*shell* ]#`).
 Note though, that this introduces an extra space:
 
      * #[echo sl:*shell ]#
      "echo /bin/sh "
+
+Another way to circumvent this problem is to write
+`#[echo ?(values sl:*shell*)]#` instead.
