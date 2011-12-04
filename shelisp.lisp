@@ -143,8 +143,13 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
               (when was-escaped
                 (vector-push char buffer)))
              (t
-              (when was-escaped
-                (vector-push #\\ buffer))
+              (cond
+                ((and (null end-char2) was-escaped)
+                 (vector-push #\\ buffer))
+                ((and end-char2 before-was-escaped)
+                 (let ((char (vector-pop buffer)))
+                   (vector-push #\\ buffer)
+                   (vector-push char buffer))))
               (vector-push char buffer)))
        :when (buffer-full-p buffer)
        :do   (increase-buffer buffer))))
