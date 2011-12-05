@@ -43,7 +43,7 @@
 ;;;;      instead because then we will have a space in the end of the returned string.
 
 (defpackage shelisp
-  (:use cl trivial-shell lisp-unit)
+  (:use cl trivial-shell)
   (:nicknames sl)
   (:export lines-to-list script *shell* enable script))
 
@@ -187,6 +187,7 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
   (list 'quote (cons 'mixed-template (read-interpolated-string stream #\# #\}))))
 
 (defun enable (&optional (copy-readtable t))
+  "Enable the reader macros in the current readtable (specified by *READTABLE*)"
   (when copy-readtable
     (setf *readtable* (copy-readtable)))
   (set-macro-character #\! #'simple-shell-escape-reader nil)
