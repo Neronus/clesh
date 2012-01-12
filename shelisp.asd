@@ -1,7 +1,7 @@
 (asdf:defsystem #:shelisp
   :serial t
   :author "Christian von Essen <christian@mvonessen.de>"
-  :license "GPL 2 (see LICENSE)"
+  :license "FreeBSD (see LICENSE)"
   :depends-on (#:trivial-shell)
   :components ((:file "shelisp"))
   :description ("Shelisp is a very short program that provides mechanisms for composing and running Unix shell (particularly bash) commands and constructs from Common Lisp.
