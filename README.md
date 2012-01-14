@@ -1,22 +1,12 @@
 # CLESH — A Unix shell interface for Common Lisp
 
-Alexandru Dan Corlan, MD, PhD
-
-Academy of Medical Sciences, University Hospital of Bucharest, Romania
-
-    CLESH — Unix shell interface with Common Lisp
-    Version 2, August 20, 2006
-    Address for Correspondence
-    Dr. Alexandru Corlan,
-    University Hospital of Bucharest, 169 Spl. Independenei, Bucharest 5,
-    Cardiology Research Unit, floor X, room 41. http://dan.corlan.net
-
-Updated by Christian von Essen
+Christian von Essen
     
-This manual documents CLESH (forked from SHELISP by Alexandru Dan
-Corlana), a very short and simple program, written in Common Lisp,
+This manual documents CLESH (Common Lisp Embedded Shell)
+, a very short and simple program, written in Common Lisp,
 that extends Common Lisp to embed shell code in a manner similar
 to perl's backtick.
+It has been forked from from SHELISP by Alexandru Dan Corlana
 
 ## Quick guide to clesh
 
