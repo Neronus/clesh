@@ -1,4 +1,4 @@
-(in-package shelisp)
+(in-package clesh)
 
 (use-package 'lisp-unit)
 

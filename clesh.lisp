@@ -1,6 +1,6 @@
-;;;; shelisp: unix shell interface for CommonLisp
+;;;; Clesh: unix shell interface for CommonLisp
 ;;;; Copyright (c) 2003-2006 Alexandru Dan Corlan MD PhD (http://dan.corlan.net)
-;;;; 
+;;;; Copyright (c) 2011 Christian von Essen <christian@mvonessen.de>
 
 ;;;; This program is free software; you can redistribute it and/or modify
 ;;;; it under the terms of the GNU General Public License version 2, as published by
@@ -34,6 +34,8 @@
 ;;;;          Use trivial-shell
 ;;;;          Unify all read functions into one
 ;;;;          Remove all bindings to shell programs
+;;;; v1.0:    January 14th, 2012
+;;;;          Renamed to CLESh (Common Lisp Embedded Shell)
 ;;;;
 ;;;;  Known problems:
 ;;;;    * #[ My standard output: ?*standard-output*]#
@@ -42,15 +44,12 @@
 ;;;;      #[ My standard output: ?*standard-output* ]#
 ;;;;      instead because then we will have a space in the end of the returned string.
 
-(defpackage shelisp
+(defpackage clesh
   (:use cl trivial-shell)
   (:nicknames sl)
   (:export lines-to-list script *shell* enable script))
 
-(in-package shelisp)
-
-(defvar *shelisp-temp-directory* "/tmp/"
-  "Directory where all temporary files are created.")
+(in-package clesh)
 
 (defparameter *shell* "/bin/sh"
   "Program to use to execute shell commands.")
