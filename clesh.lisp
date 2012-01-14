@@ -46,7 +46,7 @@
 
 (defpackage clesh
   (:use cl trivial-shell)
-  (:nicknames sl)
+  (:nicknames clsh)
   (:export lines-to-list script *shell* enable))
 
 (in-package clesh)
