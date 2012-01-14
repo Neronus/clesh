@@ -68,7 +68,15 @@ You may escape the '`?`' with a '`\`' to have it transfered to the shell command
     * !echo \?\(+ 2 3\)
     ?(+ 2 3)
     4
-    
+
+You can also use the escape for multiple lines. Just escape the
+newline with a backslash. The newlines will then be ignored, like this:
+
+   *!echo foo\
+          bar\
+          baz
+
+will output `foo bar baz`.
     
 ### Embedded shell scripts
 
