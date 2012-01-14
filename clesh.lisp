@@ -57,7 +57,7 @@
 (defun script (str &key (program *shell*))
   "Execute the STR string as a script of the program, with the eventual options,
    and return the standard-output of the command as a string."
-  (shell-command program :input str))
+  (shell-command (format nil "exec ~A" program) :input str))
 
 (defun mixed-template (&rest strlist)
   "Execute the STR string as a script of the program, with the eventual options,
