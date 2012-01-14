@@ -10,5 +10,5 @@ Essentially, it provides a '!' syntax that you can use to run commands and a '[]
 
 Lisp expressions can be included in any command or script using a '?' syntax.
 
-Shelisp works on every implementation of Common Lisp that is supported
+Clesh works on every implementation of Common Lisp that is supported
 by trivial-shell."))

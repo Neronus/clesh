@@ -1,27 +1,29 @@
-# SHELISP — A Unix shell interface for Common Lisp
+# CLESH — A Unix shell interface for Common Lisp
 
 Alexandru Dan Corlan, MD, PhD
 
 Academy of Medical Sciences, University Hospital of Bucharest, Romania
 
-    SHELISP — Unix shell interface with Common Lisp
+    CLESH — Unix shell interface with Common Lisp
     Version 2, August 20, 2006
     Address for Correspondence
     Dr. Alexandru Corlan,
     University Hospital of Bucharest, 169 Spl. Independenei, Bucharest 5,
     Cardiology Research Unit, floor X, room 41. http://dan.corlan.net
 
-This manual documents SHELISP, a very short and simple program,
-written in CommonLisp, that extends the CommonLisp syntax with
+Updated by Christian von Essen
+    
+This manual documents CLESH a very short and simple program,
+written in Common Lisp, that extends the Common Lisp syntax with
 constructs similar to unix shells, by invoking such shells.
 
-## Quick guide to shelisp
+## Quick guide to clesh
 
-Load any Common Lisp implemenation, and on the REPL load shelisp by
+Load any Common Lisp implemenation, and on the REPL load clesh by
 invoking
 
-    (load "shelisp.lisp")
-    (shelisp:enable)
+    (load "clesh.lisp")
+    (clesh:enable)
 
 ###  The bang (!) escape to shell
 
@@ -119,16 +121,16 @@ For example:
     * !!
     $ ls
     Makefile
-    shelisp.lisp
-    shelisp_mn.aux
-    shelisp_mn.log
-    shelisp_mn.pdf
-    shelisp_mn.tex
-    shelisp_sc.aux
-    shelisp_sc.log
-    shelisp_sc.pdf
-    shelisp_sc.tex
-    shelisp.tex
+    clesh.lisp
+    clesh_mn.aux
+    clesh_mn.log
+    clesh_mn.pdf
+    clesh_mn.tex
+    clesh_sc.aux
+    clesh_sc.log
+    clesh_sc.pdf
+    clesh_sc.tex
+    clesh.tex
     spec.txt
     $ # ?(setq bb 33.34)
     $ echo ?bb " is " ?(sqrt bb) " squared."
@@ -154,16 +156,16 @@ as last value.
     * (script "ls")
     "
     Makefile
-    shelisp.lisp
-    shelisp_mn.aux
-    shelisp_mn.log
-    shelisp_mn.pdf
-    shelisp_mn.tex
-    shelisp_sc.aux
-    shelisp_sc.log
-    shelisp_sc.pdf
-    shelisp_sc.tex
-    shelisp.tex
+    clesh.lisp
+    clesh_mn.aux
+    clesh_mn.log
+    clesh_mn.pdf
+    clesh_mn.tex
+    clesh_sc.aux
+    clesh_sc.log
+    clesh_sc.pdf
+    clesh_sc.tex
+    clesh.tex
     spec.txt
     "
     ""
