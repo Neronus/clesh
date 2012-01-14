@@ -164,9 +164,16 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
         (return-from enter-shell-mode))
       (princ (script ll)))))
 
+(defun the-only (list)
+  (if (or (endp list) (not (endp (cdr list))))
+      (error "~A has not exactly one element.")
+      (car list)))
+
 (defun simple-shell-escape-reader (stream char)
   (declare (ignore char))
-  (let ((ll (apply #'concatenate 'string (read-interpolated-string stream #\Newline nil t))))
+  (let* ((ll
+          (delete #\Newline
+                  (the-only (read-interpolated-string stream #\Newline nil t)))))
     (when (and (> (length ll) 0) (string= (subseq ll 0 1) "!"))
       (enter-shell-mode stream)
       (return-from simple-shell-escape-reader))
