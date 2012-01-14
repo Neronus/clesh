@@ -13,9 +13,10 @@ Academy of Medical Sciences, University Hospital of Bucharest, Romania
 
 Updated by Christian von Essen
     
-This manual documents CLESH a very short and simple program,
-written in Common Lisp, that extends the Common Lisp syntax with
-constructs similar to unix shells, by invoking such shells.
+This manual documents CLESH (forked from SHELISP by Alexandru Dan
+Corlana), a very short and simple program, written in Common Lisp,
+that extends Common Lisp to embed shell code in a manner similar
+to perl's backtick.
 
 ## Quick guide to clesh
 
@@ -27,7 +28,10 @@ invoking
 
 ###  The bang (!) escape to shell
 
-Now you can say (the '`*`' is already put there by your CL):
+For convenience, and for use from the REPL, you can emit
+single line calls to the shell using the bang.
+
+You can say (the '`*`' is already put there by your CL):
 
     * !ls
     
@@ -65,8 +69,8 @@ You may escape the '`?`' with a '`\`' to have it transfered to the shell command
     ?(+ 2 3)
     4
     
-
-### Embedded bash scripts
+    
+### Embedded shell scripts
 
 Anything written between square brackets is interpreted as a shell script. What the script prints on the standard
 output, however, is not displayed, but collected in a string and returned as a result of the bracketed expression.
@@ -109,7 +113,7 @@ Or, for example:
       0-0-0
       1-1-1
       2-2-2
-    
+      
 ### Switching to shell mode (double-bang, '!!')
 
 If you enter a double bang ('`!!`') then the prompter is changed to '`$`' and you can issue unescaped shell command
@@ -224,6 +228,29 @@ evaluated, the `BB` in the evaluation context is used.
     * (eval a)
     " plus: 22 :sulp "
 
+### Other fun things to do
+
+The program that is called for the embedded script is controlled by
+the variable `*shell*` in package `clesh`. If you want to use another
+shell (or indeed anything else), then set this variable to the
+path of the program to use.
+
+For example, you can set it to `cat -n`, and you will get everything
+you enclose in brackets back with line numbers in front:
+
+      [ foo
+         bar
+         baz ]
+
+will return as first string
+         
+     1	 foo
+     2	         bar
+     3	         baz 
+
+Furthermore, this easily allows to talk to remote PCs via an ssh
+connection or via `netcat`.
+     
 ## Technical issues
 
 Expressions preceded with '`?`' in the embedded shell scripts (with
