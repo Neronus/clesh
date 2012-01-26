@@ -166,7 +166,7 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
 
 (defun the-only (list)
   (if (or (endp list) (not (endp (cdr list))))
-      (error "~A has not exactly one element.")
+      (error "~A has not exactly one element." list)
       (car list)))
 
 (defun simple-shell-escape-reader (stream char)
