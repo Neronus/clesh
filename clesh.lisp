@@ -44,12 +44,18 @@
 ;;;;      #[ My standard output: ?*standard-output* ]#
 ;;;;      instead because then we will have a space in the end of the returned string.
 
-(defpackage clesh
-  (:use cl trivial-shell)
-  (:nicknames clsh)
-  (:export lines-to-list script *shell* enable))
+(defpackage #:clesh
+  (:use #:cl
+        #:trivial-shell
+        #:named-readtables)
+  (:nicknames #:clsh)
+  (:export #:lines-to-list
+           #:script
+           #:*shell*
+           #:enable
+           #:syntax))
 
-(in-package clesh)
+(in-package #:clesh)
 
 (defparameter *shell* "/bin/sh"
   "Program to use to execute shell commands.")
@@ -192,11 +198,10 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
   (declare (ignore char1 char2))
   (list 'quote (cons 'mixed-template (read-interpolated-string stream #\# #\}))))
 
-(defun enable (&optional (copy-readtable t))
-  "Enable the reader macros in the current readtable (specified by *READTABLE*)"
-  (when copy-readtable
-    (setf *readtable* (copy-readtable)))
-  (set-macro-character #\! #'simple-shell-escape-reader nil)
-  (set-macro-character #\[ #'embedded-shell-escape-reader nil)
-  (set-dispatch-macro-character #\# #\[ #'template-escape-reader)
-  (set-dispatch-macro-character #\# #\{ #'storable-template-escape-reader))
+(defreadtable clesh:syntax
+  (:merge :standard)
+  (:macro-char #\! #'simple-shell-escape-reader nil)
+  (:macro-char #\[ #'embedded-shell-escape-reader nil)
+  (:dispatch-macro-char #\# #\[ #'template-escape-reader)
+  (:dispatch-macro-char #\# #\{ #'storable-template-escape-reader))
+
