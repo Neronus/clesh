@@ -205,6 +205,9 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
   (:macro-char #\] #'(lambda (stream char)
                        (declare (ignore stream char))
                        (values)))
+  (:macro-char #\} #'(lambda (stream char)
+                       (declare (ignore stream char))
+                       (values)))
   (:dispatch-macro-char #\# #\[ #'template-escape-reader)
   (:dispatch-macro-char #\# #\{ #'storable-template-escape-reader))
 
