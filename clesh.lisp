@@ -52,7 +52,6 @@
   (:export #:lines-to-list
            #:script
            #:*shell*
-           #:enable
            #:syntax))
 
 (in-package #:clesh)
