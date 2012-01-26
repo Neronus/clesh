@@ -202,6 +202,9 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
   (:merge :standard)
   (:macro-char #\! #'simple-shell-escape-reader nil)
   (:macro-char #\[ #'embedded-shell-escape-reader nil)
+  (:macro-char #\] #'(lambda (stream char)
+                       (declare (ignore stream char))
+                       (values)))
   (:dispatch-macro-char #\# #\[ #'template-escape-reader)
   (:dispatch-macro-char #\# #\{ #'storable-template-escape-reader))
 
