@@ -26,4 +26,24 @@
    (read-interpolated-string (make-string-input-stream "asd foo ?(+ 2 2) bar ?(+ 3 3)]") #\]))
   (assert-equal
    '("asd foo \\]#")
-   (read-interpolated-string (make-string-input-stream "asd foo \\\\\\]#]#") #\# #\])))
+   (read-interpolated-string (make-string-input-stream "asd foo \\\\\\]#]#") #\# #\]))
+  (assert-equal
+  '("echo foo")
+  (read-interpolated-string
+   (make-string-input-stream "echo foo]")
+   #\]))
+  (assert-equal
+  '("echo foo")
+  (read-interpolated-string
+   (make-string-input-stream "echo foo}")
+   #\}))
+  (assert-equal
+  '("echo foo")
+  (read-interpolated-string
+   (make-string-input-stream "echo foo}#")
+   #\# #\}))
+  (assert-equal
+  '("echo foo")
+  (read-interpolated-string
+   (make-string-input-stream "echo foo]#")
+   #\# #\])))
