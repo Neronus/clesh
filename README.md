@@ -198,15 +198,3 @@ In the 'bang' forms only simple shell commands can be issued as the
 reader does not detect the circumstances when a construct (such as ca
 '`case`') occupies more than one line. In the embedded form or with
 the script command, any script can be executed.
-
-When interpolating a symbol, the reader might consider the closing `]`
-or `}` part of that symbol. For example, [echo ?sl:*shell* ] will make
-the reader complain about not finding the end of what it has to read.
-Instead, you have to write `#[echo ?sl:*shell* ]#` (or
-`#[ echo ?sl:*shell* ]#`). Note though, that this introduces an extra
-space:
-
-     * #[echo sl:*shell ]# "echo /bin/sh "
-
-Another way to circumvent this problem is to write
-`#[echo ?(values sl:*shell*)]#` instead.
