@@ -12,7 +12,9 @@ has been forked from from SHELISP by Alexandru Dan Corlana
 Load any Common Lisp implemenation, and on the REPL load clesh by
 invoking
 
-    (load "clesh.lisp") (clesh:enable)
+    (load "clesh.lisp")
+    (use-package 'named-readtables)
+    (in-readtable clesh:syntax)
 
 ### The bang (!) escape to shell
 
