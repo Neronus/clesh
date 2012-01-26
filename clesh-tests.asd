@@ -8,4 +8,4 @@
   :description ("Unit tests for clesn
 
 To run the tests, load this package and
-evaluate (lisp-unit:run-all-tests clesh)"))
+evaluate (lisp-unit:run-all-tests clesh-tests)"))
