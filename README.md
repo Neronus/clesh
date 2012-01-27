@@ -56,15 +56,9 @@ Provided that you already entered the factorial definition above. You
 may escape the '`?`' with a '`\`' to have it transfered to the shell
 command. for example:
 
-    * !echo \?\(+ 2 3\) ?(+ 2 3) 4
-
-You can also use the escape for multiple lines. Just escape the
-newline with a backslash. The newlines will then be ignored, like
-this:
-
-   *!echo foo\ bar\ baz
-
-will output `foo bar baz`.
+    * !echo \?\(+ 2 3\)
+    ?(+ 2 3)
+    4
     
 ### Embedded shell scripts
 
