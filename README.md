@@ -173,15 +173,40 @@ the program to use.
 For example, you can set it to `cat -n`, and you will get everything
 you enclose in brackets back with line numbers in front:
 
-      [ foo bar baz ]
+      [ foo
+        bar
+        baz ]
 
 will return as first string
          
-     1 foo 2 bar 3 baz
+     1 foo
+     2 bar
+     3 baz
 
 Furthermore, this easily allows to talk to remote PCs via an ssh
 connection or via `netcat`.
-     
+
+## Escape policy
+
+We use the backslash chatacter '`\`' to escape special parts of an
+input string. Special characters are: '`?`' and whatever is used as
+end-markers (i.e., '`]`' or '`}`'). If they are seen with a backslash
+before, then the backslash will vanish and the usual, special meaning
+of the character will be ignored. In all other cases, the backslash
+will just be left alone.
+
+When you have multiple backslashes in front of a special char,
+then a double back-slash will be replaced with a single-backslash.
+If a single backslash remains after this replacement, then it
+escapes the special character. Otherwise, the special character
+keeps its usual meaning.
+
+Assume `x` is bound to 1.
+    #[?x]#    ==> "1"
+    #[\?x]#   ==> "?x"
+    #[\\?x]#  ==> '\?x'
+    #[\\\?x]# ==> '\1'
+
 ## Technical issues
 
 Expressions preceded with '`?`' in the embedded shell scripts (with

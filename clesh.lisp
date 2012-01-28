@@ -36,13 +36,6 @@
 ;;;;          Remove all bindings to shell programs
 ;;;; v1.0:    January 14th, 2012
 ;;;;          Renamed to CLESh (Common Lisp Embedded Shell)
-;;;;
-;;;;  Known problems:
-;;;;    * #[ My standard output: ?*standard-output*]#
-;;;;      The reader considers the "]" to be part of the string it has to read.
-;;;;      We cannot simply write
-;;;;      #[ My standard output: ?*standard-output* ]#
-;;;;      instead because then we will have a space in the end of the returned string.
 
 (defpackage #:clesh
   (:use #:cl
@@ -92,6 +85,33 @@
          (subseq text from-ptr to-ptr)
        (setf from-ptr (1+ to-ptr)))))
 
+;; \?foo --> ?foo
+;; \\?foo -->\<foo>
+;; \\\?foo --> \?foo
+;; \\\\?foo --> \\<foo>
+;; \\\\\?foo --> \\?foo
+
+(defun read-escapes (str end-char1 buffer)
+  "Read escapes, push the appropriate number of escapes onto
+the buffer. If the last character is special and not escaped,
+then this character is returned. Otherwise we return nil."
+  (loop :for escapes :from 1
+        :for char = (read-char str)
+        :while (char= char #\\)
+        :finally
+          (let ((is-special (member char (list end-char1 #\?) :test #'char=)))
+            (if is-special
+                (multiple-value-bind (div rem) (floor escapes 2)
+                  (dotimes (i div)
+                    (vector-push #\\ buffer))
+                  (if (= rem 0)
+                      (return char)
+                      (vector-push char buffer)))
+                (progn
+                 (dotimes (i escapes)
+                   (vector-push #\\ buffer))
+                 (vector-push char buffer))))))
+
 (defun read-interpolated-string (str end-char1 &optional end-char2 eval-at-read)
   "Read from a stream until a delimiter is found and interpolate.
 
@@ -102,7 +122,7 @@ The delimiter is
 Interpolation starts with ?, and the next form (i.e., lisp form)
 is interpolated. If EVAL-AT-READ is not NIL, then the form will
 be evaluated and converted into a string immediately.
-Otherwise the form will be return as is.
+Otherwise the form will be returned as is.
 
 Returns a list. In this list, normal strings and interpolations alternate.
 For example the string \"asd foo ?(+ 2 2) bar ?(+ 3 3)\"
@@ -115,45 +135,32 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
            (= (array-dimension buffer 0) (length buffer))))
     (loop
        :with buffer = (get-buffer)
-       :for before-last-char = nil :then last-char
        :for last-char = nil :then char
-       :for before-was-escaped = nil then was-escaped
-       :for was-escaped = (and last-char (char= last-char #\\) (not was-escaped))
        :for char = (read-char str)
        :with mixl = nil
-       :do (cond
+       :if (char= char #\\)
+       :do (let ((spec-char
+                  (read-escapes str (or end-char2 end-char1) buffer)))
+             (when spec-char (unread-char spec-char str)))
+       :else :do (cond
              ((and (eql char end-char1) (or (null end-char2) (eql last-char end-char2)))
-              (if (or (and (null end-char2) was-escaped)
-                      (and end-char2 before-was-escaped))
-                  (vector-push char buffer)
-                  (progn
-                    (when end-char2
-                      (vector-pop buffer))
-                    (return-from read-interpolated-string
-                      (nreverse
-                       (if (zerop (length buffer))
-                           mixl
-                           (cons buffer mixl)))))))
+              (when end-char2
+                (vector-pop buffer))
+              (return-from read-interpolated-string
+                (nreverse
+                 (if (zerop (length buffer))
+                     mixl
+                     (cons buffer mixl)))))
              ((eql char #\?)
-              (if was-escaped
-                  (vector-push char buffer)
-                  (let ((form (read-preserving-whitespace str)))
-                    (push buffer mixl)
-                    (push (if eval-at-read
-                              (format nil "~A" (eval form))
-                              form) mixl)
-                    (setf buffer (get-buffer)))))
+              (let ((form (read-preserving-whitespace str)))
+                (push buffer mixl)
+                (push (if eval-at-read
+                          (format nil "~A" (eval form))
+                          form) mixl)
+                (setf buffer (get-buffer))))
              ((eql char #\\)
-              (when was-escaped
-                (vector-push char buffer)))
+              (error "Should never happen"))
              (t
-              (cond
-                ((and (null end-char2) was-escaped)
-                 (vector-push #\\ buffer))
-                ((and end-char2 before-was-escaped)
-                 (let ((char (vector-pop buffer)))
-                   (vector-push #\\ buffer)
-                   (vector-push char buffer))))
               (vector-push char buffer)))
        :when (buffer-full-p buffer)
        :do   (increase-buffer buffer))))
@@ -199,14 +206,14 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
 
 (defreadtable clesh:syntax
   (:merge :standard)
-  (:macro-char #\! #'simple-shell-escape-reader nil)
-  (:macro-char #\[ #'embedded-shell-escape-reader nil)
+  (:macro-char #\! 'simple-shell-escape-reader nil)
+  (:macro-char #\[ 'embedded-shell-escape-reader nil)
   (:macro-char #\] #'(lambda (stream char)
                        (declare (ignore stream char))
                        (values)))
   (:macro-char #\} #'(lambda (stream char)
                        (declare (ignore stream char))
                        (values)))
-  (:dispatch-macro-char #\# #\[ #'template-escape-reader)
-  (:dispatch-macro-char #\# #\{ #'storable-template-escape-reader))
+  (:dispatch-macro-char #\# #\[ 'template-escape-reader)
+  (:dispatch-macro-char #\# #\{ 'storable-template-escape-reader))
 
