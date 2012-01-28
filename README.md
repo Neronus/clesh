@@ -78,7 +78,7 @@ bracketed expression. For example:
 
 One thing that you can't ordinarily do in bash:
 
-    * (dotimes (i 7) (princ [echo ?i ])) 0 1 2 3 4 5 6
+    * (dotimes (i 7) (princ [echo ?i])) 0 1 2 3 4 5 6
     
 You can now say:
 
