@@ -1,6 +1,7 @@
 (in-package clesh)
 
-(use-package 'lisp-unit)
+(eval-when (:compile-toplevel :load-toplevel)
+  (use-package 'lisp-unit))
 
 (define-test read-interpolated-string
   (assert-equal
