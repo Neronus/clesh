@@ -53,13 +53,18 @@
   "Program to use to execute shell commands.")
 
 (defun script (str &key (program *shell*))
-  "Execute the STR string as a script of the program, with the eventual options,
-   and return the standard-output of the command as a string."
+  "Execute the STR string as a standard input of the program.
+
+Returns three values.
+   1. Standard output of the program
+   2. Standard error of the program
+   3. Exit code of the program"
   (shell-command (format nil "exec ~A" program) :input str))
 
 (defun mixed-template (&rest strlist)
-  "Execute the STR string as a script of the program, with the eventual options,
-   and return the standard-output of the command as a string."
+  "Concatenate list of arguments into a string.
+
+Turns any argument that is not a string already into string using format's ~A."
   (let ((evs (apply #'concatenate 'string
                     (mapcar #'(lambda (x)
                                 (format nil "~A" x))
@@ -67,8 +72,12 @@
     evs))
 
 (defun mixed-script (&rest strlist)
-  "Execute the string as a script of the program, with the eventual options,
-   and return the standard-output of the command as a string."
+  "Concatenate arguments like MIXED-TEMPLATE, execute result like SCRIPT.
+
+Returns three values.
+  1. Standard output of the program
+  2. Standard error of the program
+  3. Exit code of the program"
   (script (apply #'mixed-template strlist)))
 
 (defun lines-to-list (text)
@@ -166,9 +175,9 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
        :do   (increase-buffer buffer))))
 
 (defun enter-shell-mode (stream)
-  "Read and execute successive shell commands, with eventual
+  "Read and execute successive shell commands, with any
    lisp expressions embedded. Expressions are evaluated at
-   read time, as soon as a line is delivered. Implements the !! macro."
+   read time, as soon as a line is delivered. Implements the !! reader macro."
   (do () (nil)
     (princ "$ " *standard-output*)
     (let ((ll (apply #'concatenate 'string (read-interpolated-string stream #\Newline nil t))))
@@ -177,6 +186,9 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
       (princ (script ll)))))
 
 (defun the-only (list)
+  "Returns the first element of a list.
+
+Throws an error if the list does not contain exactly one argument."
   (if (or (endp list) (not (endp (cdr list))))
       (error "~A has not exactly one element." list)
       (car list)))
