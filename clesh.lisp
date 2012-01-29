@@ -220,6 +220,7 @@ Throws an error if the list does not contain exactly one argument."
   (:merge :standard)
   (:macro-char #\! 'simple-shell-escape-reader nil)
   (:macro-char #\[ 'embedded-shell-escape-reader nil)
+  ;; Ignore closing brackets when reading them
   (:macro-char #\] #'(lambda (stream char)
                        (declare (ignore stream char))
                        (values)))
