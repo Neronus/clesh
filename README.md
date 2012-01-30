@@ -202,6 +202,7 @@ escapes the special character. Otherwise, the special character
 keeps its usual meaning.
 
 Assume `x` is bound to 1.
+
     #[?x]#    ==> "1"
     #[\?x]#   ==> "?x"
     #[\\?x]#  ==> '\?x'
