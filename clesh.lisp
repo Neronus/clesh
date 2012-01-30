@@ -218,8 +218,8 @@ Throws an error if the list does not contain exactly one argument."
 
 (defreadtable clesh:syntax
   (:merge :standard)
-  (:macro-char #\! 'simple-shell-escape-reader nil)
-  (:macro-char #\[ 'embedded-shell-escape-reader nil)
+  (:macro-char #\! #'simple-shell-escape-reader nil)
+  (:macro-char #\[ #'embedded-shell-escape-reader nil)
   ;; Ignore closing brackets when reading them
   (:macro-char #\] #'(lambda (stream char)
                        (declare (ignore stream char))
@@ -227,6 +227,6 @@ Throws an error if the list does not contain exactly one argument."
   (:macro-char #\} #'(lambda (stream char)
                        (declare (ignore stream char))
                        (values)))
-  (:dispatch-macro-char #\# #\[ 'template-escape-reader)
-  (:dispatch-macro-char #\# #\{ 'storable-template-escape-reader))
+  (:dispatch-macro-char #\# #\[ #'template-escape-reader)
+  (:dispatch-macro-char #\# #\{ #'storable-template-escape-reader))
 
