@@ -185,23 +185,14 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
         (return-from enter-shell-mode))
       (princ (script ll)))))
 
-(defun the-only (list)
-  "Returns the first element of a list.
-
-Throws an error if the list does not contain exactly one argument."
-  (if (or (endp list) (not (endp (cdr list))))
-      (error "~A has not exactly one element." list)
-      (car list)))
-
 (defun simple-shell-escape-reader (stream char)
   (declare (ignore char))
   (let* ((ll
-          (delete #\Newline
-                  (the-only (read-interpolated-string stream #\Newline nil t)))))
-    (when (and (> (length ll) 0) (string= (subseq ll 0 1) "!"))
+          (apply 'concatenate 'string
+                 (read-interpolated-string stream #\Newline nil t))))
+    (if (and (> (length ll) 0) (string= (subseq ll 0 1) "!"))
       (enter-shell-mode stream)
-      (return-from simple-shell-escape-reader))
-    (princ (script ll)))
+      (princ (script ll))))
   nil)
 
 (defun embedded-shell-escape-reader (stream char)
