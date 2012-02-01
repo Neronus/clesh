@@ -56,9 +56,7 @@ Provided that you already entered the factorial definition above. You
 may escape the '`?`' with a '`\`' to have it transfered to the shell
 command. for example:
 
-    * !echo \?\(+ 2 3\)
-    ?(+ 2 3)
-    4
+    * !echo \?\(+ 2 3\) ?(+ 2 3) 4
     
 ### Embedded shell scripts
 
@@ -196,6 +194,7 @@ escapes the special character. Otherwise, the special character
 keeps its usual meaning.
 
 Assume `x` is bound to 1.
+
     #[?x]#    ==> "1"
     #[\?x]#   ==> "?x"
     #[\\?x]#  ==> '\?x'

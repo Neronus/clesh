@@ -187,11 +187,11 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
 
 (defun simple-shell-escape-reader (stream char)
   (declare (ignore char))
-  (let ((ll (apply #'concatenate 'string (read-interpolated-string stream #\Newline nil t))))
-    (when (and (> (length ll) 0) (string= (subseq ll 0 1) "!"))
-      (enter-shell-mode stream)
-      (return-from simple-shell-escape-reader))
-    (princ (script ll)))
+  (let* ((ll (apply 'concatenate 'string
+                    (read-interpolated-string stream #\Newline nil t))))
+    (if (and (> (length ll) 0) (string= (subseq ll 0 1) "!"))
+        (enter-shell-mode stream)
+        (princ (script ll))))
   nil)
 
 (defun embedded-shell-escape-reader (stream char)
