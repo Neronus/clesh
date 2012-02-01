@@ -57,14 +57,6 @@ may escape the '`?`' with a '`\`' to have it transfered to the shell
 command. for example:
 
     * !echo \?\(+ 2 3\) ?(+ 2 3) 4
-
-You can also use the escape for multiple lines. Just escape the
-newline with a backslash. The newlines will then be ignored, like
-this:
-
-   *!echo foo\ bar\ baz
-
-will output `foo bar baz`.
     
 ### Embedded shell scripts
 
@@ -202,6 +194,7 @@ escapes the special character. Otherwise, the special character
 keeps its usual meaning.
 
 Assume `x` is bound to 1.
+
     #[?x]#    ==> "1"
     #[\?x]#   ==> "?x"
     #[\\?x]#  ==> '\?x'
