@@ -187,12 +187,11 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
 
 (defun simple-shell-escape-reader (stream char)
   (declare (ignore char))
-  (let* ((ll
-          (apply 'concatenate 'string
-                 (read-interpolated-string stream #\Newline nil t))))
+  (let* ((ll (apply 'concatenate 'string
+                    (read-interpolated-string stream #\Newline nil t))))
     (if (and (> (length ll) 0) (string= (subseq ll 0 1) "!"))
-      (enter-shell-mode stream)
-      (princ (script ll))))
+        (enter-shell-mode stream)
+        (princ (script ll))))
   nil)
 
 (defun embedded-shell-escape-reader (stream char)
@@ -209,8 +208,8 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
 
 (defreadtable clesh:syntax
   (:merge :standard)
-  (:macro-char #\! 'simple-shell-escape-reader nil)
-  (:macro-char #\[ 'embedded-shell-escape-reader nil)
+  (:macro-char #\! #'simple-shell-escape-reader nil)
+  (:macro-char #\[ #'embedded-shell-escape-reader nil)
   ;; Ignore closing brackets when reading them
   (:macro-char #\] #'(lambda (stream char)
                        (declare (ignore stream char))
@@ -218,6 +217,6 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
   (:macro-char #\} #'(lambda (stream char)
                        (declare (ignore stream char))
                        (values)))
-  (:dispatch-macro-char #\# #\[ 'template-escape-reader)
-  (:dispatch-macro-char #\# #\{ 'storable-template-escape-reader))
+  (:dispatch-macro-char #\# #\[ #'template-escape-reader)
+  (:dispatch-macro-char #\# #\{ #'storable-template-escape-reader))
 
