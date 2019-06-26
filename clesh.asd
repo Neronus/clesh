@@ -5,7 +5,7 @@
   :depends-on (#:trivial-shell
                #:named-readtables)
   :components ((:file "clesh"))
-  :description ("Clesh is a very short program that provides
+  :description "Clesh is a very short program that provides
   mechanisms for running and composing Unix shell commands and
   constructs from Common Lisp.
 
@@ -17,4 +17,4 @@ Lisp expressions can be included in any command or script using a '?'
 syntax.
 
 Clesh works on every implementation of Common Lisp that is supported
-by trivial-shell."))
+by trivial-shell.")
