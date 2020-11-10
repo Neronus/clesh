@@ -145,7 +145,7 @@ will be read as (\"asd foo \" (+ 2 2) \" bar \" (+ 3 3))."
     (loop
        :with buffer = (get-buffer)
        :for last-char = nil :then char
-       :for char = (read-char str)
+       :for char = (read-char str nil end-char1)
        :with mixl = nil
        :if (char= char #\\)
        :do (let ((spec-char
